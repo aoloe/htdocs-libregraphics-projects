@@ -2,7 +2,7 @@
 return array (
     'slim' => array (
         'debug' => true,
-        'templates.path' => 'app/views',
+        'templates.path' => ROOT.'/app/views',
         // 'log.enabled' => 'true',
     ),
     'logger' => array (

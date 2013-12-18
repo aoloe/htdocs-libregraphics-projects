@@ -24,6 +24,10 @@ function debug($label, $value) {
     echo("<pre>$label:".print_r($value, 1).'</pre>'); ob_flush();
 }
 
+// $_SERVER['REQUEST_URI'] = str_replace('/projects/', '/', $_SERVER['REQUEST_URI']);
+// $_SERVER['SCRIPT_NAME'] = str_replace('/projects/', '/', $_SERVER['SCRIPT_NAME']);
+// debug('_SERVER', $_SERVER);
+
 require ROOT.'/vendor/Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -39,17 +43,18 @@ $app->config($config['slim']);
 // $view = $app->view();
 // $view->setTemplatesDirectory('./template');
 
-debug('_SERVER', $_SERVER);
+// debug('_SERVER', $_SERVER);
 $req = $app->request;
 $rootUri = $req->getRootUri();
-debug('rootUri', $rootUri);
+// debug('rootUri', $rootUri);
 $scriptName = $req->getScriptName();
-debug('scriptName', $scriptName);
+// debug('scriptName', $scriptName);
 // $req->setScriptName('/public');
 // $scriptName = $req->getScriptName();
 // debug('scriptName', $scriptName);
 $resourceUri = $req->getResourceUri();
-debug('resourceUri', $resourceUri);
+// debug('resourceUri', $resourceUri);
+// cf. Slim/Environment.php constructor and the $phyiscalPath variable...
 
 // when php is run as a module $_ENV is always empty
 $app->configureMode('production', function () use ($app) {
