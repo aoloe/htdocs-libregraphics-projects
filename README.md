@@ -9,12 +9,33 @@ Php to browse the Libre Graphics projects
   - The `.yaml` file contains structured information about the project. The information are used for displaying the key facts about the project and for searching.
   - The project can also contain images that are linked from the `.md` file. 
 - The project descriptions are mirrored as `.html` files that get included in the rendered pages.
-- The information from the `.yaml` file is mirrored in a database
+- The information from the `.yaml` file is mirrored in a database.
+
+We need:
+
+- A category view.
+- A search form with:
+  - categories
+  - license
+  - active
+  - last released
+  - tags / keywords
+
+Specification:
+
+- Multiple categories per project
+- Multiple licenses per project
+- Multiple tags/keywords per project
+
+## Questions
+
+- Do we need categories if we have tags?
 
 ## Plans
 
-- using the [slim framework](http://www.slimframework.com/)
-- using the [twik template engine](twig.sensiolabs.org)
+- using [htdocs-gitapi-get](https://github.com/aoloe/htdocs-gitapi-get) to fetch the files from the git repository.
+- using the [slim framework](http://www.slimframework.com/).
+- using the [twik template engine](twig.sensiolabs.org).
 - probably, paris and idiorm for the database access.
 - look at this [pictures viewer](https://github.com/jeremykendall/flaming-archer) for inspiration
 - see also [Rapid Application Prototyping in PHP Using a Micro Framework](http://net.tutsplus.com/tutorials/php/rapid-application-prototyping-in-php-using-a-micro-framework/).
