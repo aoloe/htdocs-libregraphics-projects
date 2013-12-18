@@ -35,7 +35,13 @@ Specification:
 
 - using [htdocs-gitapi-get](https://github.com/aoloe/htdocs-gitapi-get) to fetch the files from the git repository.
 - using the [slim framework](http://www.slimframework.com/).
-- using the [twik template engine](twig.sensiolabs.org).
+- using the [twik template engine](http://twig.sensiolabs.org).
 - probably, paris and idiorm for the database access.
 - look at this [pictures viewer](https://github.com/jeremykendall/flaming-archer) for inspiration
 - see also [Rapid Application Prototyping in PHP Using a Micro Framework](http://net.tutsplus.com/tutorials/php/rapid-application-prototyping-in-php-using-a-micro-framework/).
+
+## Install
+
+- Get the latest Slim code and put it in the `Slim/` directory
+- Get the latest Twig code and put it in the `Twig/` directory
+- Get the latest Slim-Views code and put it in the new `Slim/Views` directory
