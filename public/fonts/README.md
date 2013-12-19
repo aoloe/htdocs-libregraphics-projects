@@ -1,0 +1,6 @@
+This directory should contain the Twitter Bootstrap fonts:
+
+- glyphicons-halflings-regular.eot
+- glyphicons-halflings-regular.svg
+- glyphicons-halflings-regular.ttf
+- glyphicons-halflings-regular.woff
