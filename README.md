@@ -46,12 +46,13 @@ Specification:
 - Get the latest Slim code and put it in the `Slim/` directory
   - Apply the following patch to get Slim to work in a subfolder:  
 
-            $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
-            if (array_key_exists('REDIRECT_URL', $_SERVER) && ($_SERVER['REDIRECT_URL'] != $_SERVER['SCRIPT_NAME']) && (strpos(dirname($_SERVER['REDIRECT_URL']), basename($_SERVER['SCRIPT_NAME'])) == 0)) {
-                $physicalPath = dirname($_SERVER['REDIRECT_URL']); // <-- With rewriting to a subfolder
-            } else {
-                $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
-            }
+            <                 $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
+            ---
+            >                 if (array_key_exists('REDIRECT_URL', $_SERVER) && ($_SERVER['REDIRECT_URL'] != $_SERVER['SCRIPT_NAME']) && (strpos(dirname($_SERVER['REDIRECT_URL']), basename($_SERVER['SCRIPT_NAME'])) == 0)) {
+            >                     $physicalPath = dirname($_SERVER['REDIRECT_URL']); // <-- With rewriting to a subfolder
+            >                 } else {
+            >                     $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
+            >                 }
 
 - Get the latest Twig code and put it in the `Twig/` directory
 - Get the latest Slim-Views code and put it in the new `Slim/Views` directory
