@@ -21,7 +21,7 @@ We need:
   - last released
   - tags / keywords
 
-Specification:
+# Specification:
 
 - Multiple categories per project
 - Multiple licenses per project
@@ -44,7 +44,7 @@ Specification:
 ## Install
 
 - Get the latest Slim code and put it in the `Slim/` directory
-  - Apply the following patch to `Slim/Environment.php` to get Slim to work in a subfolder:  
+  - Patch `Slim/Environment.php` to get Slim to work in a subfolder:  
 
             <                 $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
             ---
@@ -57,3 +57,21 @@ Specification:
 - Get the latest Twig code and put it in the `Twig/` directory
 - Get the latest Slim-Views code and put it in the new `Slim/Views` directory
 - Get the latest Bootstrap package and add the `css/`, `js/` and `fonts/` files in `public/`
+
+## Files structure
+
+    /
+        .htaccess        <-- redirect to public/index.php
+        app/             <-- all the logic
+            index.php
+            config/
+            views/
+        public/          <-- the content accessible per HTTP
+            index.php    <-- the entry point for all HTTP requests
+            css/
+            fonts/
+            img/
+            js/
+        vendor/          <-- the external libraries
+            Slim/
+            Twig/
