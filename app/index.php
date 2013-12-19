@@ -38,6 +38,9 @@ $app = new \Slim\Slim(array(
     'view' => new \Slim\Views\Twig(),
 ));
 $app->config($config['slim']);
+$app->view->parserExtensions = array(
+    new \Slim\Views\TwigExtension()
+);
 // $log_path = $app->config('logger.path'); 
 
 // $view = $app->view();
@@ -52,8 +55,12 @@ $scriptName = $req->getScriptName();
 // $req->setScriptName('/public');
 // $scriptName = $req->getScriptName();
 // debug('scriptName', $scriptName);
-$resourceUri = $req->getResourceUri();
-// debug('resourceUri', $resourceUri);
+$pathInfo = $req->getPathInfo();
+// debug('pathInfo', $pathInfo);
+$url = $req->getUrl();
+// debug('url', $url);
+$rootUri = $req->getRootUri();
+// debug('rootUri', $rootUri);
 // cf. Slim/Environment.php constructor and the $phyiscalPath variable...
 
 // when php is run as a module $_ENV is always empty

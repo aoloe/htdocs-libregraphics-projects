@@ -56,3 +56,4 @@ Specification:
 
 - Get the latest Twig code and put it in the `Twig/` directory
 - Get the latest Slim-Views code and put it in the new `Slim/Views` directory
+- Get the latest Bootstrap package and add the `css/`, `js/` and `fonts/` files in `public/`
