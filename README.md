@@ -44,7 +44,7 @@ Specification:
 ## Install
 
 - Get the latest Slim code and put it in the `Slim/` directory
-  - Apply the following patch to get Slim to work in a subfolder:  
+  - Apply the following patch to `Slim/Environment.php` to get Slim to work in a subfolder:  
 
             <                 $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
             ---
