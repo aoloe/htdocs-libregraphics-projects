@@ -35,15 +35,16 @@ Specification:
 
 - using [htdocs-gitapi-get](https://github.com/aoloe/htdocs-gitapi-get) to fetch the files from the git repository.
 - using the [slim framework](http://www.slimframework.com/).
-- using the [twik template engine](http://twig.sensiolabs.org).
+- using the [twig template engine](http://twig.sensiolabs.org).
 - probably, paris and idiorm for the database access.
 - look at this [pictures viewer](https://github.com/jeremykendall/flaming-archer) for inspiration
 - see also [Rapid Application Prototyping in PHP Using a Micro Framework](http://net.tutsplus.com/tutorials/php/rapid-application-prototyping-in-php-using-a-micro-framework/).
+- [MozMorris has a Slim fork](https://github.com/MozMorris/Slim/tree/webroot) with support for the same directory structure as i have (I took the second `.htacess` from there and convinced me to create the patch below)
 
 ## Install
 
 - Get the latest Slim code and put it in the `Slim/` directory
-  - Apply the following patch to get Slim to work in a subfolder:
+  - Apply the following patch to get Slim to work in a subfolder:  
         <                 $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
         ---
         >                 if (array_key_exists('REDIRECT_URL', $_SERVER) && ($_SERVER['REDIRECT_URL'] != $_SERVER['SCRIPT_NAME']) && (strpos(dirname($_SERVER['REDIRECT_URL']), basename($_SERVER['SCRIPT_NAME'])) == 0)) {
