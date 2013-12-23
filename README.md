@@ -37,9 +37,13 @@ We need:
 - using the [slim framework](http://www.slimframework.com/).
 - using the [twig template engine](http://twig.sensiolabs.org).
 - probably, paris and idiorm for the database access.
+
+## Insprating links
+
 - look at this [pictures viewer](https://github.com/jeremykendall/flaming-archer) for inspiration
 - see also [Rapid Application Prototyping in PHP Using a Micro Framework](http://net.tutsplus.com/tutorials/php/rapid-application-prototyping-in-php-using-a-micro-framework/).
 - [MozMorris has a Slim fork](https://github.com/MozMorris/Slim/tree/webroot) with support for the same directory structure as i have (I took the second `.htacess` from there and convinced me to create the patch below)
+- [How to do Unit Testing with Slim](http://there4development.com/blog/2013/10/13/unit-testing-slim-framework-applications-with-phpunit/) (and otherwise [good code snippets](https://github.com/there4/slim-unit-testing-example) when using Slim)
 
 ## Install
 

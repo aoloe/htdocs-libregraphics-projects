@@ -2,6 +2,7 @@
 namespace aoloe\logger {
     /**
      * the default Slim logger writes to standard output... we need something persistent
+     * --> We can probably use the "old" logger in Slim Extras
      */
     class Logger {
         protected $config = array(
@@ -24,10 +25,6 @@ function debug($label, $value) {
     echo("<pre>$label:".print_r($value, 1).'</pre>'); ob_flush();
 }
 
-// $_SERVER['REQUEST_URI'] = str_replace('/projects/', '/', $_SERVER['REQUEST_URI']);
-// $_SERVER['SCRIPT_NAME'] = str_replace('/projects/', '/', $_SERVER['SCRIPT_NAME']);
-// debug('_SERVER', $_SERVER);
-
 require ROOT.'/vendor/Slim/Slim.php';
 
 \Slim\Slim::registerAutoloader();
@@ -38,32 +35,31 @@ $app = new \Slim\Slim(array(
     'view' => new \Slim\Views\Twig(),
 ));
 $app->config($config['slim']);
+
 $app->view->parserExtensions = array(
     new \Slim\Views\TwigExtension()
 );
+
 // $log_path = $app->config('logger.path'); 
 
 // $view = $app->view();
 // $view->setTemplatesDirectory('./template');
 
 // debug('_SERVER', $_SERVER);
-$req = $app->request;
-$rootUri = $req->getRootUri();
+// $req = $app->request;
+// $rootUri = $req->getRootUri();
 // debug('rootUri', $rootUri);
-$scriptName = $req->getScriptName();
-// debug('scriptName', $scriptName);
-// $req->setScriptName('/public');
 // $scriptName = $req->getScriptName();
 // debug('scriptName', $scriptName);
-$pathInfo = $req->getPathInfo();
+// $pathInfo = $req->getPathInfo();
 // debug('pathInfo', $pathInfo);
-$url = $req->getUrl();
+// $url = $req->getUrl();
 // debug('url', $url);
-$rootUri = $req->getRootUri();
+// $rootUri = $req->getRootUri();
 // debug('rootUri', $rootUri);
-// cf. Slim/Environment.php constructor and the $phyiscalPath variable...
 
 // when php is run as a module $_ENV is always empty
+
 $app->configureMode('production', function () use ($app) {
     $app->config(array(
             'log.enable' => true,
@@ -75,12 +71,14 @@ $app->configureMode('production', function () use ($app) {
 // $log = $app->getLog();
 // $log->setWriter(new\aoloe\logger\Logger());
 
-// print_r($_SERVER);
-// echo($_SERVER['SCRIPT_FILENAME']);
+$app->get('/update', function () use ($app) {
+    // TODO: include gitapi.php (and not the update.php script...) or, even better, add a class
+    // wrapping gitapi.php in a way that is "compatible" with Slim
+    $app->render('update.html', array('test' => 'this is a test'));
+});
+
 $app->get('/hello/:name', function ($name) use ($app) {
-    // $app->view->setData(array('name' => $name));
     $app->view->appendData(array('name' => $name));
-    // $app->render('layout.php', array('test' => 'this is a test'));
     $app->render('layout.html', array('test' => 'this is a test'));
 });
 $app->run();
