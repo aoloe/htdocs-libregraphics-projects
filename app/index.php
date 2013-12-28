@@ -21,8 +21,10 @@ namespace aoloe\logger {
 
 namespace {
 
-function debug($label, $value) {
-    echo("<pre>$label:".print_r($value, 1).'</pre>'); ob_flush();
+if (!function_exists('debug')) {
+    function debug($label, $value) {
+        echo("<pre>$label:".print_r($value, 1).'</pre>'); ob_flush();
+    }
 }
 
 require ROOT.'/vendor/Slim/Slim.php';
@@ -60,6 +62,14 @@ $app->view->parserExtensions = array(
 
 // when php is run as a module $_ENV is always empty
 
+require(ROOT.'/vendor/Paris/idiorm.php'); // TODO: can paris and idiorm be used with the autoloader?
+require(ROOT.'/vendor/Paris/paris.php');
+ORM::configure($config['database']['url']);
+ORM::configure('username', $config['database']['username']);
+ORM::configure('password', $config['database']['password']);
+require('models/Project.php');
+Model::factory('Project');
+
 $app->configureMode('production', function () use ($app) {
     $app->config(array(
             'log.enable' => true,
@@ -71,14 +81,33 @@ $app->configureMode('production', function () use ($app) {
 // $log = $app->getLog();
 // $log->setWriter(new\aoloe\logger\Logger());
 
-$app->get('/update', function () use ($app) {
-    // TODO: include gitapi.php (and not the update.php script...) or, even better, add a class
-    // wrapping gitapi.php in a way that is "compatible" with Slim
-    $app->render('update.html', array('test' => 'this is a test'));
+$app->get('/update', function () use ($app, $config) {
+    define('GITAPIGET_LOCAL', true);
+    $gitapiget = new \GitApiGet\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
+    // TODO: also show the reset time
+    $ratelimit = $gitapiget->get_ratelimit();
+    // debug('ratelimit', $ratelimit);
+    $list_cached = $gitapiget->get_list_from_cache();
+    $list_new = $gitapiget->get_list();
+    // debug('list_new', $list_new);
+    $list = $gitapiget->get_list_compared($list_new, $list_cached);
+    // debug('list', $list);
+    $action = $gitapiget->update_cache($list);
+
+    $gitapiget->set_list_into_cache($list);
+
+    // TODO: manage the proejcts list in the database?
+
+    $app->render('update.html', array('ratelimit' => $ratelimit));
 });
 
-$app->get('/hello/:name', function ($name) use ($app) {
-    $app->view->appendData(array('name' => $name));
+$app->get('/:project', function ($project) use ($app) {
+    $app->view->appendData(array('project' => $project));
+    $app->render('layout.html', array('test' => 'this is a test'));
+});
+
+// TODO: how to add a default root?
+$app->get('.*', function () use ($app) {
     $app->render('layout.html', array('test' => 'this is a test'));
 });
 $app->run();

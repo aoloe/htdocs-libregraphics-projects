@@ -1,5 +1,6 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^$ public/    [L]
+#RewriteCond %{REQUEST_FILENAME} !-d # when enabled, no access to projects/
+#RewriteRule ^$ public/    [L]
 RewriteRule (.*) public/$1 [L]
 # RewriteRule ^ index.php [QSA,L]

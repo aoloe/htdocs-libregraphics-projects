@@ -38,7 +38,7 @@ We need:
 - using the [twig template engine](http://twig.sensiolabs.org).
 - probably, paris and idiorm for the database access.
 
-## Insprating links
+## Inspirational links
 
 - look at this [pictures viewer](https://github.com/jeremykendall/flaming-archer) for inspiration
 - see also [Rapid Application Prototyping in PHP Using a Micro Framework](http://net.tutsplus.com/tutorials/php/rapid-application-prototyping-in-php-using-a-micro-framework/).
@@ -47,7 +47,7 @@ We need:
 
 ## Install
 
-- Get the latest Slim code and put it in the `Slim/` directory
+- Get the latest Slim code and put the `Slim` directory in the `vendor/` directory
   - Patch `Slim/Environment.php` to get Slim to work in a subfolder:  
 
             <                 $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
@@ -58,9 +58,31 @@ We need:
             >                     $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
             >                 }
 
-- Get the latest Twig code and put it in the `Twig/` directory
-- Get the latest Slim-Views code and put it in the new `Slim/Views` directory
-- Get the latest Bootstrap package and add the `css/`, `js/` and `fonts/` files in `public/`
+- Get the latest Twig code and put the `Twig-*/lib/Twig` directory it in the `vendor/` directory.
+- Get the latest Slim-Views code and put it in the new `Slim/Views` directory.
+- Get the latest Bootstrap package and add the `css/`, `js/` and `fonts/` files in `public/`.
+- Get the latest Idiorm and Paris packages and add the `idiorm.php` and `paris.php` files to the `vendor/Paris/` directory.
+
+    CREATE TABLE IF NOT EXISTS `projects` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(128) NOT NULL,
+      `description` text NOT NULL,
+      `icon_path` varchar(128) NOT NULL,
+      `license_type` SET('liberal,infective') NOT NULL,
+      `updated` datetime NOT NULL, // TODO: auto update
+      PRIMARY KEY (`id`)
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+    CREATE TABLE IF NOT EXISTS `tag` (
+      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `name` varchar(128) NOT NULL,
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+    CREATE TABLE IF NOT EXISTS `project_tag` (
+      `project_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+      `tag_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
 
 ## Files structure
 
@@ -79,3 +101,4 @@ We need:
         vendor/          <-- the external libraries
             Slim/
             Twig/
+            Paris/
