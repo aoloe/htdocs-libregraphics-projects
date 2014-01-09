@@ -21,15 +21,16 @@ namespace aoloe\logger {
 
 namespace {
 
+ini_set('display_errors', '1');
+error_reporting(E_ALL);
+
 if (!function_exists('debug')) {
     function debug($label, $value) {
         echo("<pre>$label:".print_r($value, 1).'</pre>'); ob_flush();
     }
 }
 
-require ROOT.'/vendor/Slim/Slim.php';
-
-\Slim\Slim::registerAutoloader();
+require ROOT.'/vendor/autoload.php';
 
 $config = require 'config/config.php';
 
@@ -62,11 +63,57 @@ $app->view->parserExtensions = array(
 
 // when php is run as a module $_ENV is always empty
 
-require(ROOT.'/vendor/Paris/idiorm.php'); // TODO: can paris and idiorm be used with the autoloader?
-require(ROOT.'/vendor/Paris/paris.php');
-ORM::configure($config['database']['url']);
-ORM::configure('username', $config['database']['username']);
-ORM::configure('password', $config['database']['password']);
+// ORM::configure($config['database']['url']);
+// ORM::configure('username', $config['database']['username']);
+// ORM::configure('password', $config['database']['password']);
+ORM::configure('sqlite:'.ROOT.'/storage/paris/projects.db');
+
+$db = ORM::get_db();
+try {
+$db->exec("
+    CREATE TABLE IF NOT EXISTS contact (
+        id INTEGER PRIMARY KEY, 
+        name TEXT, 
+        email TEXT 
+    );
+    CREATE TABLE IF NOT EXISTS `projects` (
+      `id` INTEGER PRIMARY KEY,
+      `name` TEXT,
+      `description` TEXT,
+      `icon_path` TEXT,
+      `license_type` INTEGER,
+      `updated` INTEGER
+    );
+
+    CREATE TABLE IF NOT EXISTS `tag` (
+      `id` INTEGER PRIMARY KEY,
+      `name` TEXT
+    );
+
+    CREATE TABLE IF NOT EXISTS `project_tag` (
+      `project_id` INTEGER,
+      `tag_id` INTEGER
+    );
+
+    CREATE TABLE IF NOT EXISTS `license` (
+      `id` INTEGER PRIMARY KEY,
+      `name` TEXT,
+      `type` INTEGER
+    );
+
+    CREATE TABLE IF NOT EXISTS `license_type` (
+      `id` INTEGER PRIMARY KEY,
+      `name` TEXT,
+      `description` TEXT
+    );
+
+");
+} catch (Exception $e) {
+    debug('e', $e);
+}
+
+
+
 require('models/Project.php');
 Model::factory('Project');
 
@@ -83,7 +130,11 @@ $app->configureMode('production', function () use ($app) {
 
 $app->get('/update', function () use ($app, $config) {
     define('GITAPIGET_LOCAL', true);
-    $gitapiget = new \GitApiGet\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
+    // $gitapiget = new \Aoloe\GitApiGet\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
+    // $gitapiget = new \GitApiGet\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
+    // $gitapiget = new \Aoloe\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
+    // $gitapiget = new \Aoloe\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
+    $gitapiget = new GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
     // TODO: also show the reset time
     $ratelimit = $gitapiget->get_ratelimit();
     // debug('ratelimit', $ratelimit);
@@ -101,7 +152,7 @@ $app->get('/update', function () use ($app, $config) {
     $app->render('update.html', array('ratelimit' => $ratelimit));
 });
 
-$app->get('/:project', function ($project) use ($app) {
+$app->get('/p/:project', function ($project) use ($app) {
     $app->view->appendData(array('project' => $project));
     $app->render('layout.html', array('test' => 'this is a test'));
 });

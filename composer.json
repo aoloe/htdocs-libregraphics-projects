@@ -1,0 +1,27 @@
+{
+    "name": "aoloe/htdocs-libregraphics-projects",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:aoloe/htdocs-gitapi-get.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "git@github.com:aoloe/Slim.git"
+        }
+    ],
+    "require" : {
+        "slim/slim" : "dev-subdirectory as dev-master",
+        "slim/views": "0.1.*",
+        "twig/twig" : "1.15.*",
+        "j4mie/paris" : "*",
+        "j4mie/idiorm" : "*",
+        "aoloe/gitapiget" : "dev-master"
+    },
+    "authors" : [
+        {
+            "name" : "Ale Rimoldi",
+            "email" : "ale@graphicslab.org"
+        }
+    ]
+}
