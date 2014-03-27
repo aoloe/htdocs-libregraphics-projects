@@ -47,42 +47,13 @@ We need:
 
 ## Install
 
-- Get the latest Slim code and put the `Slim` directory in the `vendor/` directory
-  - Patch `Slim/Environment.php` to get Slim to work in a subfolder:  
+This projects uses:
+- A patched version of Slim for the routing
+- Twig for the templates
+- Idiorm and Paris for storing the projects' data in a Sqlite database
+- GitApiGet to get the files from the github repository
 
-            <                 $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
-            ---
-            >                 if (array_key_exists('REDIRECT_URL', $_SERVER) && ($_SERVER['REDIRECT_URL'] != $_SERVER['SCRIPT_NAME']) && (strpos(dirname($_SERVER['REDIRECT_URL']), basename($_SERVER['SCRIPT_NAME'])) == 0)) {
-            >                     $physicalPath = dirname($_SERVER['REDIRECT_URL']); // <-- With rewriting to a subfolder
-            >                 } else {
-            >                     $physicalPath = str_replace('\\', '', dirname($scriptName)); // <-- With rewriting
-            >                 }
-
-- Get the latest Twig code and put the `Twig-*/lib/Twig` directory it in the `vendor/` directory.
-- Get the latest Slim-Views code and put it in the new `Slim/Views` directory.
-- Get the latest Bootstrap package and add the `css/`, `js/` and `fonts/` files in `public/`.
-- Get the latest Idiorm and Paris packages and add the `idiorm.php` and `paris.php` files to the `vendor/Paris/` directory.
-
-    CREATE TABLE IF NOT EXISTS `projects` (
-      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-      `name` varchar(128) NOT NULL,
-      `description` text NOT NULL,
-      `icon_path` varchar(128) NOT NULL,
-      `license_type` SET('liberal,infective') NOT NULL,
-      `updated` datetime NOT NULL, // TODO: auto update
-      PRIMARY KEY (`id`)
-    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
-    CREATE TABLE IF NOT EXISTS `tag` (
-      `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-      `name` varchar(128) NOT NULL,
-    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
-    CREATE TABLE IF NOT EXISTS `project_tag` (
-      `project_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-      `tag_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-    ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
-
+You can pull all the dependencies through composer.
 
 ## Files structure
 

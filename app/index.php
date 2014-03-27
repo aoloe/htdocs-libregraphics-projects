@@ -130,10 +130,6 @@ $app->configureMode('production', function () use ($app) {
 
 $app->get('/update', function () use ($app, $config) {
     define('GITAPIGET_LOCAL', true);
-    // $gitapiget = new \Aoloe\GitApiGet\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
-    // $gitapiget = new \GitApiGet\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
-    // $gitapiget = new \Aoloe\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
-    // $gitapiget = new \Aoloe\GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
     $gitapiget = new GitApiGet($config['gitapiget'] + (GITAPIGET_LOCAL ? $config['gitapiget_local'] : $config['gitapiget_github']));
     // TODO: also show the reset time
     $ratelimit = $gitapiget->get_ratelimit();
@@ -142,10 +138,14 @@ $app->get('/update', function () use ($app, $config) {
     $list_new = $gitapiget->get_list();
     // debug('list_new', $list_new);
     $list = $gitapiget->get_list_compared($list_new, $list_cached);
-    // debug('list', $list);
+    debug('list', $list);
     $action = $gitapiget->update_cache($list);
-
     $gitapiget->set_list_into_cache($list);
+
+    foreach ($list as $key => $value) {
+        if ($value['status'] == 'insert') {
+        }
+    }
 
     // TODO: manage the proejcts list in the database?
 
